@@ -1,0 +1,41 @@
+topic: ~chat()
+language: enu
+
+# Defining extra concepts out of words or group of words
+# For small talk
+concept: (hello) ^rand[hello hi hey greetings "hello there" "hi there"]
+concept: (givename) ["my name is" "i am" "you may call me" "you can call me"]
+concept: (namelist) [Anner Joe Jose Mario]
+concept: (askname) ["Who am I" "What's my name" "What is my name" "do you know me"]
+concept: (howsyou) ["How are you" "Ho w are you doing"]
+concept: (bye) [goodbye bye farewell "see you" "take care" "cheers"]
+# For services
+concept: (trigjpn) ["Japanese culture" "Learn about Japan" "Japanese customs" "Shinto Shrine" Japan]
+concept: (trigtrain) ["rush to the train" "hurry to the train"]
+concept: (trigpic) ["take my picture" "take a picure" picture]
+concept: (trigmap) ["give me direction" "show me a map" map maps directions]
+
+# Catching inputs and triggering outputs
+#u:(e:onStart) $onStopped=1
+
+# Replying to speech
+u: (~hello) ~hello how may i help you
+u: (~howsyou) I'm fine thank you
+u: (~bye) ~bye
+u: (["what's your name?" "what is your name?"]) My name is Pepper! 
+u: (["How old are you?" "What's your age?" "What is your age?"]) I am supposedly 5 years old...
+u: (["thank you" thanks]) ^rand["You're very welcome" "You're welcome" "Glad to help" "No Problemo!"]
+
+# Using name given in reply
+#u:(name is _*) Hi there $1 # needs a special license to use this
+u: (~givename _~namelist) Nice to meet you $1 $name=$1
+u: (~askname) ^first["You are my friend $name" "You are my friend"]
+
+# Main functional behaviors for tourism proof of concept
+u: (_~trigjpn) Do you want to learn about Japanese culture?
+    u1: (yes) $onStopped=1
+u: (_~trigpic) Do you want to me to take your picture? 
+    u1: (yes) $onStopped=2
+u: (_~trigmap) Do you want to me to show you a map? 
+    u1: (yes) $onStopped=3
+u: (_~trigtrain) Please do not rush to the train! $onStopped=4
