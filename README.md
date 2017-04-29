@@ -8,7 +8,7 @@ J.E. Chen, A.W. de Jong, M. Rodriguez & J.I.U. Rubrico
 
 ### Consisting of:
 
-1. html folder with the GUI files for Pepper's Tablet (html & CSS)
+1. html folder with the GUI files for Pepper's Tablet (html & CSS, under 'Pepper2020\Hackathon\html')
 2. choregraphe folder with a Choregraphe application for controlling pepper itself 
 
 ### Inspiration
