@@ -11,6 +11,20 @@
         </message>
     </context>
     <context>
+        <name>behavior_1/behavior.xar:/Animated Say</name>
+        <message>
+            <source>Hello</source>
+            <comment>Text</comment>
+            <translation type="vanished">Hello</translation>
+        </message>
+        <message>
+            <location filename="behavior_1/behavior.xar" line="0"/>
+            <source>I am de-stressing...</source>
+            <comment>Text</comment>
+            <translation type="unfinished">I am de-stressing...</translation>
+        </message>
+    </context>
+    <context>
         <name>behavior_1/behavior.xar:/Dont rush</name>
         <message>
             <location filename="behavior_1/behavior.xar" line="0"/>

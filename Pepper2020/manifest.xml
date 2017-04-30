@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<package version="0.0.0" uuid="hackathon-e943ea">
+<package uuid="hackathon-e943ea" version="0.0.0">
  <names>
-  <name lang="en_US">Untitled</name>
+  <name lang="en_US">Pepper2020</name>
  </names>
  <supportedLanguages>
   <language>en_US</language>

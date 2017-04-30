@@ -7,13 +7,13 @@ concept: (hello) ^rand[hello hi hey greetings "hello there" "hi there"]
 concept: (givename) ["my name is" "i am" "you may call me" "you can call me"]
 concept: (namelist) [Anner Joe Jose Mario]
 concept: (askname) ["Who am I" "What's my name" "What is my name" "do you know me"]
-concept: (howsyou) ["How are you" "Ho w are you doing"]
+concept: (howsyou) ["How are you" "How are you doing"]
 concept: (bye) [goodbye bye farewell "see you" "take care" "cheers"]
 # For services
 concept: (trigjpn) ["Japanese culture" "Learn about Japan" "Japanese customs" "Shinto Shrine" Japan]
 concept: (trigtrain) ["rush to the train" "hurry to the train"]
 concept: (trigpic) ["take my picture" "take a picure" picture]
-concept: (trigmap) ["give me direction" "show me a map" map maps directions]
+concept: (trigmap) ["give me direction" "give me directions" "show me a map" map maps directions]
 
 # Catching inputs and triggering outputs
 #u:(e:onStart) $onStopped=1
@@ -39,3 +39,7 @@ u: (_~trigpic) Do you want to me to take your picture?
 u: (_~trigmap) Do you want to me to show you a map? 
     u1: (yes) $onStopped=3
 u: (_~trigtrain) Please do not rush to the train! $onStopped=4
+u: (["At ease" "relax" "have fun"]) If you say so! $onStopped=5
+u: ([sleep "go to sleep" "time for bed" "bed time" "take a nap" "nap time"]) Good night! $onStopped=6
+u: (["wake up" "rise and shine"]) Yawn, is it morning already?! $onStopped=7
+

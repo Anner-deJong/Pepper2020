@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+<title>Live Camera</title>
+<script type='text/javascript' charset='utf-8' src='jquery/jquery.min.js'></script>
+<script type='text/javascript' charset='utf-8' src='qi/qi.js'></script>
+
+<style>
+#camera {
+    align-items: center;
+    justify-content: center;
+	height: 2000px;
+	width: 3000px;
+}
+
+form{
+font-size: 250%;
+
+}
+
+</style>
+
+</head>
+<body style="background-color:black ;color:white;">
+    <div align="center">
+        <font size="30px" color="white"> <a href="../index.html">Back</a> </font>
+        <form action="Talk_with_pepper.html">
+            <p>Insert your email address below:</p>
+            <input type="anner.de.jong@outlook.com" name="email" />
+            <input type="submit" name="Take and send photo" value="Take and send photo" />
+        </form>
+    </div>
+
+<canvas id='camera'></canvas>
+
+<script type='text/javascript' charset='utf-8'>
+
+var pepperSeatVideo = {};
+
+QiSession(function(session) {
+	session.service('ALVideoDevice').then(function(ALVideoDevice) {
+
+		function startPreview() {
+			var subId = 'head_camera_live_movie';
+			ALVideoDevice.subscribeCamera(
+				subId,
+				0, // cameraId kTop kBottom kInfred(color:17)
+				7, // 320x240 8,7,0,1,2,3
+				11, // 0:monochrome, 9:YUV, 11:RGB
+				30 // framerate 1~30
+			).then(function(res){
+				pepperSeatVideo.id = res;
+				// ALVideoDevice.id = res;
+				var $cvs = $('#camera');
+				// 画像の取得
+				function getPicture() {
+					ALVideoDevice
+						.getImageRemote(pepperSeatVideo.id)
+						.then(function(res){
+							if (res) {
+								drawCaptureImage(res, $cvs);
+								setTimeout(getPicture, 10); // recursively call every 10 milliseconds to create live preview
+							}
+						});
+				}
+				getPicture();
+			});
+		}
+
+		function drawCaptureImage(res, $cvs) {
+				// [0]: width.
+				// [1]: height.
+				// [2]: number of layers.
+				// [3]: ColorSpace.
+				// [4]: time stamp (seconds).
+				// [5]: time stamp (micro-seconds).
+				// [6]: binary array of size height * width * nblayers containing image data.
+				// [7]: camera ID (kTop=0, kBottom=1).
+				// [8]: left angle (radian).
+				// [9]: topAngle (radian).
+				// [10]: rightAngle (radian).
+				// [11]: bottomAngle (radian)
+			var w = res[0], h = res[1], nb = res[2],
+				binary = res[6],//window.atob(res[6]),
+				len = binary.length, m = len/nb;
+
+			var ctx = $cvs[0].getContext('2d');
+			var img = ctx.createImageData(w, h);
+			var pixs = img.data;
+
+			if (res[2] == 1) { // monochrome
+				for (var i = 0; i < m; i++) {
+					pixs[i*4] = pixs[i*4+1] = pixs[i*4+2] = binary[i*nb];
+					pixs[i*4+3] = 255;
+				}
+			} else if (res[3] === 11) { // RGB
+				for (i = 0; i < m; i++) {
+					pixs[i*4] = binary[i*nb];
+					pixs[i*4+1] = binary[i*nb+1];
+					pixs[i*4+2] = binary[i*nb+2];
+					pixs[i*4+3] = 255;
+				}
+			} else { // TODO YUVの変換
+				for (i = 0; i < m; i++) {
+					pixs[i*4] = binary[i*nb];
+					if (nb > 1) {
+						pixs[i*4+1] = binary[i*nb+1];
+					} else {
+						pixs[i*4+1] = pixs[i*4];
+					}
+					if (nb > 2) {
+						pixs[i*4+2] = binary[i*nb+2];
+					} else {
+						pixs[i*4+2] = pixs[i*4];
+					}
+					pixs[i*4+3] = 255;
+				}
+			}
+			ctx.putImageData(img, 0, 0);
+		}
+
+		startPreview();
+	});
+});
+
+</script>
+
+</body>
+</html>
